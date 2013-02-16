@@ -49,7 +49,6 @@ module.exports = function(opts) {
     }
 
     if(options.output) {
-        // console.log(options)
         outputizeFile(options.path);
     }
     else {
