@@ -93,6 +93,11 @@ var options = nomnom.options({
         abbr: 'a',
         flag: true,
         help: "asynchronously read/write files in directory (faster)"
+    },
+    output: {
+        abbr: 'o',
+        flag: true,
+        help: "save input file with replace version in specificed location"
     }
   })
   .script("replace")

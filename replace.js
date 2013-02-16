@@ -48,12 +48,18 @@ module.exports = function(opts) {
        eval('replaceFunc = ' + fs.readFileSync(options.funcFile, "utf-8"));
     }
 
-    for (var i = 0; i < options.path.length; i++) {
-        if(options.async) {
-            replacizeFile(options.path[i]);
-        }
-        else {
-            replacizeFileSync(options.path[i]);
+    if(options.output) {
+        // console.log(options)
+        outputizeFile(options.path);
+    }
+    else {
+        for (var i = 0; i < options.path.length; i++) {
+            if(options.async) {
+                replacizeFile(options.path[i]);
+            }
+            else {
+                replacizeFileSync(options.path[i]);
+            }
         }
     }
 
@@ -175,5 +181,25 @@ module.exports = function(opts) {
         if (canReplace) {
             return text.replace(regex, replaceFunc || options.replacement);
         }
+    }
+
+    function outputizeFile(file) {
+        var newFile = file.pop();
+
+        if(file.length > 1) {
+            console.log('Output can only do a 1 to 1 replacement.');
+            process.exit(1);
+        }
+
+        fs.readFile(file[0], "utf-8", function(err, text) {
+            if (err) throw err;
+
+            text = replacizeText(text, file);
+            if(canReplace) {
+                fs.writeFile(newFile, text, function(err) {
+                    if (err) throw err;
+                });
+            }
+        });
     }
 }
